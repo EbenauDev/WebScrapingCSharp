@@ -36,16 +36,27 @@ namespace WebScraping.Main
 
             if (await webScrapingService.LerPaginasAsync(configuracao) is var resultado && resultado == null)
             {
-                Console.WriteLine("Houve um problema ao coletar os preços das Placas de vídeos");
+                Console.WriteLine("Houve um problema ao coletar os preços das placas de vídeos");
                 return 0;
             }
 
+            Console.WriteLine("Gerando relatório de preços em formato .TXT");
             if (await webScrapingService.GerarRelatorioAsync(resultado) is var sucessoRelatorio && sucessoRelatorio == false)
             {
-                Console.WriteLine("Houve um problema ao gerar o relatório de preços das Placas de vídeos");
+                Console.WriteLine("Houve um problema ao gerar o relatório de preços das placas de vídeos");
                 return 0;
             }
+            Console.WriteLine("Relatório .TXT gerado com sucesso!");
 
+            Console.WriteLine("Gerando relatório de preços em formato .CSV");
+            if (await webScrapingService.GerarRelatorioCSVAsync(resultado) is var sucessoRelatorioCsv && sucessoRelatorioCsv == false)
+            {
+                Console.WriteLine("Houve um problema ao gerar o relatório CSV de preços das placas de vídeos");
+                return 0;
+            }
+            Console.WriteLine("Relatório .CSV gerado com sucesso!");
+            Console.WriteLine("Relatórios estão salvos na área de trabalho!");
+            Console.ReadKey();
             return 0;
         }
 

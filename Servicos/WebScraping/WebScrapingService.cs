@@ -12,6 +12,7 @@ namespace Servicos
     {
         Task<IEnumerable<Produto>> LerPaginasAsync(ConfiguracaoService configuracao);
         Task<bool> GerarRelatorioAsync(IEnumerable<Produto> produtos);
+        Task<bool> GerarRelatorioCSVAsync(IEnumerable<Produto> produtos);
     }
 
     public class WebScrapingService : IWebScrapingService
@@ -50,6 +51,26 @@ namespace Servicos
                 }
                 var areaDeTrabalhoPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
                 await File.AppendAllTextAsync($"{areaDeTrabalhoPath}//preco-placas-de-video-{DateTime.Now.ToString("dd-MM-yyyy")}.txt", arquivoTxt.ToString(), Encoding.UTF8);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> GerarRelatorioCSVAsync(IEnumerable<Produto> produtos)
+        {
+            try
+            {
+                var arquivoTxt = new StringBuilder();
+                arquivoTxt.AppendLine("Produto, Valor a Vista, Valor Parcelado, Loja, Disponibilidade, Data de Consulta");
+                foreach (var produto in produtos)
+                {
+                    arquivoTxt.AppendLine($"{produto.Nome}, {produto.ValorAVista}, {produto.ValorParcelado}, {produto.Loja}, {produto.Disponibilidade}, {produto.DataDeConsulta.ToString("dd/MM/yyyy 'às' HH:mm")}");
+                }
+                var areaDeTrabalhoPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
+                await File.AppendAllTextAsync($"{areaDeTrabalhoPath}//preco-placas-de-video-{DateTime.Now.ToString("dd-MM-yyyy")}.csv", arquivoTxt.ToString(), Encoding.UTF8);
                 return true;
             }
             catch (Exception)
