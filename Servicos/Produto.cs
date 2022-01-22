@@ -20,6 +20,5 @@ namespace Servicos
         public string Loja { get; set; }
         public string Disponibilidade { get; set; }
         public DateTime DataDeConsulta { get; set; }
-
     }
 }

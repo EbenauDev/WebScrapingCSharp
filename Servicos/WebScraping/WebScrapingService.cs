@@ -64,10 +64,11 @@ namespace Servicos
             try
             {
                 var arquivoTxt = new StringBuilder();
-                arquivoTxt.AppendLine("Produto, Valor a Vista, Valor Parcelado, Loja, Disponibilidade, Data de Consulta");
+                arquivoTxt.AppendLine("Produto# Valor a Vista# Valor Parcelado# Loja# Disponibilidade# Data de Consulta");
                 foreach (var produto in produtos)
                 {
-                    arquivoTxt.AppendLine($"{produto.Nome}, {produto.ValorAVista}, {produto.ValorParcelado}, {produto.Loja}, {produto.Disponibilidade}, {produto.DataDeConsulta.ToString("dd/MM/yyyy 'às' HH:mm")}");
+                    var novaLinha = $"{produto.Nome.Split(",")[0]}# {produto.ValorAVista}# {produto.ValorParcelado}# {produto.Loja}# {produto.Disponibilidade}# {produto.DataDeConsulta.ToString("dd/MM/yyyy 'às' HH:mm")}";
+                    arquivoTxt.AppendLine(novaLinha);
                 }
                 var areaDeTrabalhoPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
                 await File.AppendAllTextAsync($"{areaDeTrabalhoPath}//preco-placas-de-video-{DateTime.Now.ToString("dd-MM-yyyy")}.csv", arquivoTxt.ToString(), Encoding.UTF8);
