@@ -28,22 +28,44 @@ namespace Servicos
 
                 HtmlDocument htmlDocument = new HtmlDocument();
                 htmlDocument.LoadHtml(paginaBaixada);
+
+
+
                 var tituloItem = htmlDocument.DocumentNode.Descendants("h1")
                                                 .FirstOrDefault()
                                                 .InnerText;
 
+                var produtoEstaEsgotado = htmlDocument.DocumentNode.Descendants("div")
+                                             .Where(node => node.GetAttributeValue("id", "")
+                                             .Contains("formularioProdutoIndisponivel"))
+                                             .FirstOrDefault();
+
+
+                if (produtoEstaEsgotado != null)
+                {
+                    return new Produto(tituloItem,
+                                       valorAVista: "R$ 0,00",
+                                       valorParcelado: "R$ 0,00",
+                                       loja: "Lojas Kabum",
+                                       disponibilidade: "Produto indisponível",
+                                       dataDeConsulta: DateTime.Now);
+                }
+
                 var valorAVista = htmlDocument.DocumentNode.Descendants("h4")
                                                 .FirstOrDefault()
                                                 .InnerText;
-
                 var valorParcelado = htmlDocument.DocumentNode
                                                 .Descendants("b")
                                                 .Where(node => node.GetAttributeValue("class", "")
                                                 .Contains("regularPrice"))
                                                 .FirstOrDefault()
                                                 .InnerText;
-
-                return new Produto(tituloItem, DateTime.Now, valorAVista, valorParcelado);
+                return new Produto(tituloItem,
+                                   valorAVista,
+                                   valorParcelado,
+                                   loja: "Lojas Kabum",
+                                   disponibilidade: "Produto disponível",
+                                   DateTime.Now);
             }
             catch (Exception ex)
             {

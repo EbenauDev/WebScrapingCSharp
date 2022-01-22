@@ -34,17 +34,32 @@ namespace Servicos
                                                     .Contains("product-page-title"))
                                                     .FirstOrDefault()
                                                     .InnerText;
+                    var produtoEstaEsgotado = htmlDocument.DocumentNode.Descendants("span")
+                                        .Where(node => node.InnerText.Contains("Produto Indisponível"))
+                                        .ToList();
 
+                    if (produtoEstaEsgotado == null || produtoEstaEsgotado.Any())
+                    {
+                        return new Produto(tituloItem,
+                                           valorAVista: "Esgotado",
+                                           valorParcelado: "Esgotado",
+                                           "Loja Pichau",
+                                            disponibilidade: "Produto indisponível",
+                                           dataDeConsulta: DateTime.Now);
+                    }
                     var valorAVista = htmlDocument.DocumentNode.Descendants("div")
                                                    .Where(node => node.InnerText.Contains("R$"))
                                                    .ToList()[9].InnerText;
-
                     var valorParcelado = htmlDocument.DocumentNode
                                                     .Descendants("div")
                                                     .Where(node => node.InnerText.Contains("R$"))
                                                     .ToList()[12].InnerText;
-
-                    return new Produto(tituloItem, DateTime.Now, valorAVista, valorParcelado);
+                    return new Produto(tituloItem,
+                                       valorAVista,
+                                       valorParcelado,
+                                       loja: "Loja Pichau",
+                                       disponibilidade: "Produto disponível",
+                                       DateTime.Now);
                 }
                 catch (Exception ex)
                 {
