@@ -45,7 +45,8 @@ namespace Servicos
                                            valorParcelado: "Esgotado",
                                            "Loja Pichau",
                                             disponibilidade: "Produto indisponível",
-                                           dataDeConsulta: DateTime.Now);
+                                           dataDeConsulta: DateTime.Now,
+                                           link: enderecoURl);
                     }
                     var valorAVista = htmlDocument.DocumentNode.Descendants("div")
                                                    .Where(node => node.InnerText.Contains("R$"))
@@ -59,7 +60,8 @@ namespace Servicos
                                        valorParcelado,
                                        loja: "Loja Pichau",
                                        disponibilidade: "Produto disponível",
-                                       DateTime.Now);
+                                       DateTime.Now,
+                                       link: enderecoURl);
                 }
                 catch (Exception ex)
                 {

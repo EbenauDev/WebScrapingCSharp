@@ -46,6 +46,7 @@ namespace Servicos
                     arquivoTxt.AppendLine($"Preço parcelado: {produto.ValorParcelado}");
                     arquivoTxt.AppendLine($"Loja: {produto.Loja}");
                     arquivoTxt.AppendLine($"Disponibilidade: {produto.Disponibilidade}");
+                    arquivoTxt.AppendLine($"Link de Compra: {produto.Link}");
                     arquivoTxt.AppendLine($"Consultado: {produto.DataDeConsulta.ToString("dd/MM/yyyy 'às' HH:mm")}");
                     arquivoTxt.AppendLine($"==============================================================================");
                 }
@@ -64,10 +65,10 @@ namespace Servicos
             try
             {
                 var arquivoTxt = new StringBuilder();
-                arquivoTxt.AppendLine("Produto# Valor a Vista# Valor Parcelado# Loja# Disponibilidade# Data de Consulta");
+                arquivoTxt.AppendLine("Produto# Valor a Vista# Valor Parcelado# Loja# Disponibilidade# Link de Compra# Data de Consulta");
                 foreach (var produto in produtos)
                 {
-                    var novaLinha = $"{produto.Nome.Split(",")[0]}# {produto.ValorAVista}# {produto.ValorParcelado}# {produto.Loja}# {produto.Disponibilidade}# {produto.DataDeConsulta.ToString("dd/MM/yyyy 'às' HH:mm")}";
+                    var novaLinha = $"{produto.Nome.Split(",")[0]}# {produto.ValorAVista}# {produto.ValorParcelado}# {produto.Loja}# {produto.Disponibilidade}# {produto.Link}# {produto.DataDeConsulta.ToString("dd/MM/yyyy 'às' HH:mm")}";
                     arquivoTxt.AppendLine(novaLinha);
                 }
                 var areaDeTrabalhoPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);

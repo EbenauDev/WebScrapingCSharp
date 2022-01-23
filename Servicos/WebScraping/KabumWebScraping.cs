@@ -48,7 +48,8 @@ namespace Servicos
                                        valorParcelado: "R$ 0,00",
                                        loja: "Lojas Kabum",
                                        disponibilidade: "Produto indisponível",
-                                       dataDeConsulta: DateTime.Now);
+                                       dataDeConsulta: DateTime.Now,
+                                       link: enderecoURl);
                 }
 
                 var valorAVista = htmlDocument.DocumentNode.Descendants("h4")
@@ -65,7 +66,8 @@ namespace Servicos
                                    valorParcelado,
                                    loja: "Lojas Kabum",
                                    disponibilidade: "Produto disponível",
-                                   DateTime.Now);
+                                   DateTime.Now,
+                                   link: enderecoURl);
             }
             catch (Exception ex)
             {

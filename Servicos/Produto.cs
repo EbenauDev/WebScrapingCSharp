@@ -4,7 +4,7 @@ namespace Servicos
 {
     public sealed class Produto
     {
-        public Produto(string nome, string valorAVista, string valorParcelado, string loja, string disponibilidade, DateTime dataDeConsulta)
+        public Produto(string nome, string valorAVista, string valorParcelado, string loja, string disponibilidade, DateTime dataDeConsulta, string link)
         {
             Nome = nome;
             ValorAVista = valorAVista;
@@ -12,6 +12,7 @@ namespace Servicos
             Loja = loja;
             Disponibilidade = disponibilidade;
             DataDeConsulta = dataDeConsulta;
+            Link = link;
         }
 
         public string Nome { get; set; }
@@ -20,5 +21,6 @@ namespace Servicos
         public string Loja { get; set; }
         public string Disponibilidade { get; set; }
         public DateTime DataDeConsulta { get; set; }
+        public string Link { get; set; }
     }
 }
