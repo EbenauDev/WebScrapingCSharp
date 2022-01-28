@@ -22,5 +22,30 @@ namespace Servicos
         public string Disponibilidade { get; set; }
         public DateTime DataDeConsulta { get; set; }
         public string Link { get; set; }
+        public double GetValorAVista()
+        {
+            try
+            {
+                return Double.Parse(ValorAVista.Trim().Substring(2));
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+
+        public double GetValorParcelado()
+        {
+            try
+            {
+                return Double.Parse(ValorParcelado.Trim().Substring(2));
+            }
+            catch (Exception ex)
+            {
+
+                return 0;
+            }
+        }
+
     }
 }
