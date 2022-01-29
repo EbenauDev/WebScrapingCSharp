@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Servicos.Relatorio
@@ -32,5 +33,30 @@ namespace Servicos.Relatorio
 
         public static PeriodoHistoricoProduto Novo(double valorAvista, double valorParcelado, DateTime data)
             => new PeriodoHistoricoProduto(valorAvista, valorParcelado, data);
+    }
+
+    public static class PeriodoHistoricoProdutoEnxtensao
+    {
+        public static double Minima(this IEnumerable<PeriodoHistoricoProduto> historicos)
+        {
+            return historicos
+                    .OrderBy(h => h.ValorAvista)
+                    .FirstOrDefault().ValorAvista;
+        }
+
+        public static double Maxima(this IEnumerable<PeriodoHistoricoProduto> historicos)
+        {
+            return historicos
+                  .OrderByDescending(h => h.ValorAvista)
+                  .FirstOrDefault().ValorAvista;
+        }
+
+        public static double Media(this IEnumerable<PeriodoHistoricoProduto> historicos)
+        {
+            var quantidade = historicos.Count();
+            var soma = historicos.Select(historico => historico.ValorAvista).Sum();
+            return (soma / quantidade);
+        }
+
     }
 }

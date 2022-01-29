@@ -26,7 +26,7 @@ namespace Servicos
         {
             try
             {
-                return Double.Parse(ValorAVista.Trim().Substring(2));
+                return Double.Parse(ValorAVista.Trim().Substring(3));
             }
             catch (Exception ex)
             {
@@ -38,7 +38,7 @@ namespace Servicos
         {
             try
             {
-                return Double.Parse(ValorParcelado.Trim().Substring(2));
+                return Double.Parse(ValorParcelado.Trim().Substring(3));
             }
             catch (Exception ex)
             {

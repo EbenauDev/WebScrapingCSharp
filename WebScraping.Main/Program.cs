@@ -17,10 +17,36 @@ namespace WebScraping.Main
             var serviceCollecion = new ServiceCollection();
             ConfigureServices(serviceCollecion);
             var serviceProvider = serviceCollecion.BuildServiceProvider();
-            //var webScrapingService = serviceProvider.GetService<IWebScrapingService>();
+            var webScrapingService = serviceProvider.GetService<IWebScrapingService>();
             var relatorioPrecos = serviceProvider.GetService<IRelatorioService>();
-            await GerarRelatorioComparacaoPrecosAsync(relatorioPrecos);
+            Perguntar();
+            int opcao = Convert.ToInt32(Console.ReadLine());
+
+            while (opcao > 2 || opcao < 0)
+            {
+                Perguntar();
+                opcao = Convert.ToInt32(Console.ReadLine());
+            }
+
+            if (opcao == 1)
+            {
+                await RealizarPesquisaPrecosAsync(webScrapingService);
+            }
+
+            if (opcao == 2)
+            {
+                await GerarRelatorioComparacaoPrecosAsync(relatorioPrecos);
+            }
+
             return 0;
+        }
+
+        private static void Perguntar()
+        {
+            Console.Clear();
+            Console.WriteLine("O que você deseja fazer?");
+            Console.WriteLine("[ 1 ] Para gerar relátorio dos preços das GPU`s");
+            Console.WriteLine("[ 2 ] Para gerar relátorio comparando ospreços de GPU`s");
         }
 
         public async static Task<int> RealizarPesquisaPrecosAsync(IWebScrapingService webScrapingService)
