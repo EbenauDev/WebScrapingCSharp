@@ -21,7 +21,7 @@ namespace Servicos.Relatorio
             var lista = await LerProdutosAsync(caminhoArquivoCSV);
             var produtosAgrupados = lista.GroupBy(produto => produto.Nome, (chave, produtos) => new
             {
-                NomeProduto = chave,
+                Produto = produtos.Select(p => new { p.Nome, p.Loja, p.Link, }).FirstOrDefault(),
                 Periodos = produtos.Select(p => new
                 {
                     ValorAVista = p.GetValorAVista(),
@@ -32,7 +32,9 @@ namespace Servicos.Relatorio
             var historicos = new List<HistoricoProduto>();
             foreach (var produto in produtosAgrupados)
             {
-                historicos.Add(new HistoricoProduto(produto.NomeProduto,
+                historicos.Add(new HistoricoProduto(produto.Produto.Nome,
+                                                    produto.Produto.Loja,
+                                                    produto.Produto.Link,
                                                     peridos: produto.Periodos
                                                             .Select(p => PeriodoHistoricoProduto
                                                                            .Novo(p.ValorAVista, p.ValorParcelado, p.Data))));
@@ -64,6 +66,7 @@ namespace Servicos.Relatorio
                             link: valores[5]
                         ));
                 }
+
             }
             return lista;
         }
@@ -72,14 +75,16 @@ namespace Servicos.Relatorio
         {
             try
             {
-                var arquivoTxt = new StringBuilder();
+                var arquivoTxt = new StringBuilder()
+                        .Append($"Relatório gerado em {DateTime.Now.ToString("dddd, dd 'de' MMMM 'às' HH:mm 'de' yyyy")}");
                 foreach (var historico in historicos)
                 {
                     arquivoTxt.AppendLine($"Nome: {historico.NomeProdto}");
                     arquivoTxt.AppendLine($"Preço médio: {historico.Peridos.Media().ToString("C", CultureInfo.CurrentCulture)}");
                     arquivoTxt.AppendLine($"Preço máximo: {historico.Peridos.Maxima().ToString("C", CultureInfo.CurrentCulture)}");
                     arquivoTxt.AppendLine($"Preço mínimo: {historico.Peridos.Minima().ToString("C", CultureInfo.CurrentCulture)}");
-                    arquivoTxt.AppendLine($"Consultado: {DateTime.Now.ToString("dd/MM/yyyy 'às' HH:mm")}");
+                    arquivoTxt.AppendLine($"Loja: {historico.NomeLoja}");
+                    arquivoTxt.AppendLine($"Link: {historico.Link}");
                     arquivoTxt.AppendLine();
                 }
                 var areaDeTrabalhoPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);

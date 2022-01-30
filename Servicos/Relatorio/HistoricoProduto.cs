@@ -7,13 +7,17 @@ namespace Servicos.Relatorio
 {
     public class HistoricoProduto
     {
-        public HistoricoProduto(string nomeProdto, IEnumerable<PeriodoHistoricoProduto> peridos)
+        public HistoricoProduto(string nomeProdto, string nomeLoja, string link, IEnumerable<PeriodoHistoricoProduto> peridos)
         {
             NomeProdto = nomeProdto;
+            NomeLoja = nomeLoja;
+            Link = link;
             Peridos = peridos;
         }
 
         public string NomeProdto { get; set; }
+        public string NomeLoja { get; set; }
+        public string Link { get; set; }
         public IEnumerable<PeriodoHistoricoProduto> Peridos { get; set; }
 
     }

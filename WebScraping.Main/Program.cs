@@ -96,18 +96,30 @@ namespace WebScraping.Main
         }
         public async static Task<int> GerarRelatorioComparacaoPrecosAsync(IRelatorioService relatorioService)
         {
-            Console.WriteLine("Gerar relátorio comparando os precos");
-            Console.WriteLine("Copie o caminho do arquivo .csv que contêm os preços: ");
-            var caminhoArquivo = Console.ReadLine();
-
-            if (await relatorioService.GerarRelatorioPrecosAsync(caminhoArquivo) is var sucessoRelatorioComparador && sucessoRelatorioComparador == false)
+            try
             {
-                Console.WriteLine("Houve um problema ao gerar o relatório CSV de comparação dos preços dos produtos");
-                return 0;
+                Console.WriteLine("Gerar relátorio comparando os precos");
+                Console.WriteLine("Copie o caminho do arquivo .csv que contêm os preços: ");
+                var caminhoArquivo = Console.ReadLine();
+
+                if (await relatorioService.GerarRelatorioPrecosAsync(caminhoArquivo) is var sucessoRelatorioComparador && sucessoRelatorioComparador == false)
+                {
+                    Console.WriteLine("Houve um problema ao gerar o relatório CSV de comparação dos preços dos produtos");
+                    return 0;
+                }
+                Console.WriteLine("Relatório de comparação de preços está salvo na área de trabalho!");
+                Console.ReadKey();
+                return 1;
             }
-            Console.WriteLine("Relatório de comparação de preços está salvo na área de trabalho!");
-            Console.ReadKey();
-            return 1;
+            catch (Exception ex)
+            {
+                Console.WriteLine("Houve um problema ao gerar o relatório de comparação");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Execption: ", ex.Message);
+                Console.WriteLine("StackTrace: ", ex.StackTrace);
+                return -1;
+            }
+
         }
 
         public static void ConfigureServices(IServiceCollection services)
