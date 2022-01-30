@@ -55,6 +55,10 @@ namespace Servicos.Relatorio
                 while (!reader.EndOfStream)
                 {
                     var linha = await reader.ReadLineAsync();
+                    if (string.IsNullOrEmpty(linha))
+                    {
+                        throw new Exception("O arquivo está vázio ou contêm uma linha em branco");
+                    }
                     var valores = linha.Split("#");
                     lista.Add(new Produto(
                             nome: valores[0],
@@ -76,13 +80,15 @@ namespace Servicos.Relatorio
             try
             {
                 var arquivoTxt = new StringBuilder()
-                        .Append($"Relatório gerado em {DateTime.Now.ToString("dddd, dd 'de' MMMM 'às' HH:mm 'de' yyyy")}");
+                        .AppendLine($"Relatório gerado em {DateTime.Now.ToString("dddd, dd 'de' MMMM 'às' HH:mm 'de' yyyy")}")
+                        .AppendLine();
                 foreach (var historico in historicos)
                 {
-                    arquivoTxt.AppendLine($"Nome: {historico.NomeProdto}");
+                    arquivoTxt.AppendLine($"Produto: {historico.NomeProdto}");
                     arquivoTxt.AppendLine($"Preço médio: {historico.Peridos.Media().ToString("C", CultureInfo.CurrentCulture)}");
                     arquivoTxt.AppendLine($"Preço máximo: {historico.Peridos.Maxima().ToString("C", CultureInfo.CurrentCulture)}");
                     arquivoTxt.AppendLine($"Preço mínimo: {historico.Peridos.Minima().ToString("C", CultureInfo.CurrentCulture)}");
+                    arquivoTxt.AppendLine($"Preço atual: {historico.Peridos.PrecoAtual().ToString("C", CultureInfo.CurrentCulture)}");
                     arquivoTxt.AppendLine($"Loja: {historico.NomeLoja}");
                     arquivoTxt.AppendLine($"Link: {historico.Link}");
                     arquivoTxt.AppendLine();

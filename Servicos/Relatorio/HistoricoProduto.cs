@@ -62,5 +62,10 @@ namespace Servicos.Relatorio
             return (soma / quantidade);
         }
 
+        public static double PrecoAtual(this IEnumerable<PeriodoHistoricoProduto> historicos)
+        {
+            return historicos.OrderByDescending(h => h.Data).FirstOrDefault().ValorAvista;
+        }
+
     }
 }

@@ -115,8 +115,8 @@ namespace WebScraping.Main
             {
                 Console.WriteLine("Houve um problema ao gerar o relatório de comparação");
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Execption: ", ex.Message);
-                Console.WriteLine("StackTrace: ", ex.StackTrace);
+                Console.WriteLine("Execption: ", ex.Message.ToString());
+                Console.WriteLine("StackTrace: ", ex.StackTrace.ToString());
                 return -1;
             }
 
