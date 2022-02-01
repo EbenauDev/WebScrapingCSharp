@@ -5,6 +5,7 @@ using Servicos.Relatorio;
 using Servicos.WebScraping;
 using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,6 +20,13 @@ namespace WebScraping.Main
             var serviceProvider = serviceCollecion.BuildServiceProvider();
             var webScrapingService = serviceProvider.GetService<IWebScrapingService>();
             var relatorioPrecos = serviceProvider.GetService<IRelatorioService>();
+            if (await EstaConectado() is var resultado && resultado == false)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("Você não está conectado a internet");
+                Console.WriteLine("Conecte-se a internet para continuar utilizando");
+                return -1;
+            }
             Perguntar();
             int opcao = Convert.ToInt32(Console.ReadLine());
 
@@ -120,6 +128,22 @@ namespace WebScraping.Main
                 return -1;
             }
 
+        }
+
+        public static async Task<bool> EstaConectado()
+        {
+            try
+            {
+                var ping = new Ping();
+                string host = "google.com";
+                byte[] buffer = new byte[32];
+                var reply = await Task.Run(() => ping.Send(host, timeout: 1000, buffer, new PingOptions()));
+                return (reply.Status == IPStatus.Success);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public static void ConfigureServices(IServiceCollection services)
