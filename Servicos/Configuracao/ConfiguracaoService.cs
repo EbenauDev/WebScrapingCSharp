@@ -1,15 +1,5 @@
-﻿using System.Collections.Generic;
-
-namespace Servicos.Configuracao
+﻿namespace Servicos.Configuracao
 {
-    public sealed class ConfiguracaoService
-    {
-        public ConfiguracaoService(IEnumerable<Parametro> parametros)
-        {
-            Parametros = parametros;
-        }
-        public IEnumerable<Parametro> Parametros { get; set; }
-    }
 
     public sealed class Parametro
     {

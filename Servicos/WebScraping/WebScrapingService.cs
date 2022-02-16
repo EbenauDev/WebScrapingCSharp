@@ -10,7 +10,7 @@ namespace Servicos
 {
     public interface IWebScrapingService
     {
-        Task<IEnumerable<Produto>> LerPaginasAsync(ConfiguracaoService configuracao);
+        Task<IEnumerable<Produto>> LerPaginasAsync(IEnumerable<Parametro> parametros);
         Task<bool> GerarRelatorioAsync(IEnumerable<Produto> produtos);
         Task<bool> GerarRelatorioCSVAsync(IEnumerable<Produto> produtos);
     }
@@ -23,10 +23,10 @@ namespace Servicos
             _scrapingStrategy = scrapingStrategy;
         }
 
-        public async Task<IEnumerable<Produto>> LerPaginasAsync(ConfiguracaoService configuracao)
+        public async Task<IEnumerable<Produto>> LerPaginasAsync(IEnumerable<Parametro> parametros)
         {
             var _lista = new List<Produto>();
-            foreach (var paramero in configuracao.Parametros)
+            foreach (var paramero in parametros)
             {
                 if (_scrapingStrategy.DefinirWebScraping(paramero.Site) is var scraping && scraping != null)
                     _lista.Add(await scraping.LerPaginasAsync(paramero.EnderecoURL));
