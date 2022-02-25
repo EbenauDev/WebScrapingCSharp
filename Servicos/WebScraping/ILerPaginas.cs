@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using Servicos.Generics;
+using System.Threading.Tasks;
 
 namespace Servicos
 {
     public interface ILerPaginas
     {
-        Task<Produto> LerPaginasAsync(string enderecoURl);
+        Task<Resultado<Produto, Falha>> LerPaginasAsync(string enderecoURl);
     }
 }

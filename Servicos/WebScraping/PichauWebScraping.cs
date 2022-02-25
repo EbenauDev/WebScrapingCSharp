@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using Servicos.Generics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Servicos
 
         }
 
-        public async Task<Produto> LerPaginasAsync(string enderecoURl)
+        public async Task<Resultado<Produto, Falha>> LerPaginasAsync(string enderecoURl)
         {
             using (var webClient = new WebClient())
             {
@@ -65,7 +66,7 @@ namespace Servicos
                 }
                 catch (Exception ex)
                 {
-                    return null;
+                    return Falha.NovaComDetalhes($"Houve um problema ao tentar acessar o seguinte endereço: {enderecoURl}", ex.ToString());
                 }
             }
         }

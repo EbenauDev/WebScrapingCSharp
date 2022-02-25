@@ -1,4 +1,5 @@
 ﻿using Servicos.Configuracao;
+using Servicos.Log;
 using Servicos.WebScraping;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace Servicos
     public class WebScrapingService : IWebScrapingService
     {
         private readonly IWebScrapingStrategy _scrapingStrategy;
+        private readonly ILogService _logService;
         public WebScrapingService(IWebScrapingStrategy scrapingStrategy)
         {
             _scrapingStrategy = scrapingStrategy;
@@ -28,8 +30,13 @@ namespace Servicos
             var _lista = new List<Produto>();
             foreach (var paramero in parametros)
             {
-                if (_scrapingStrategy.DefinirWebScraping(paramero.Site) is var scraping && scraping != null)
-                    _lista.Add(await scraping.LerPaginasAsync(paramero.EnderecoURL));
+                var servico = _scrapingStrategy.DefinirWebScraping(paramero.Site);
+                if (await servico.LerPaginasAsync(paramero.EnderecoURL) is var resultado && resultado.EhFalha)
+                {
+                    await _logService.GravarLogAsync(resultado.Falha.Mensagem, resultado.Falha.Detalhes);
+                    continue;
+                }
+                _lista.Add(resultado.Sucesso);
             }
             return _lista;
         }
